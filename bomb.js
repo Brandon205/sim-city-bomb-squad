@@ -17,25 +17,31 @@ var wiresToCut = [];
 //DOM References TO-DO: audio 
 var timer = document.getElementById('timer');
 var wireBox = document.getElementById('wirebox');
-var resetButton = document.getElementById('button');
+var resetButton = document.querySelector('button');
 
 //Event Handlers
 wireBox.addEventListener('click', function(e) {
     var color = e.target.alt;
-    if (!wireState[color] && !gameOver) {//if these things then...
+    if (!wireState[color] && !gameOver && color) {//if these things then...
         e.target.src = `img/cut-${color}-wire.png`;
         //TODO: play cut audio
         wireState[color] = true;
         //check for correctness
         var wireIndex = wiresToCut.indexOf(color);
         if (wireIndex > -1) {
+            console.log('correct');
             wiresToCut.splice(wireIndex, 1);
+            if (checkForWin()) {
+                endGame(true);
+            }
         } else {
-            setTimeout
+            console.log('wrong');
+            delay = setTimeout(endGame, 750, false);
         }
-        // TODO: checkForWin();
     }
 })
+
+resetButton.addEventListener('click', reset);
 
 //Other Functions
 function init() {
@@ -50,6 +56,7 @@ function init() {
     console.log(wiresToCut);
     resetButton.disable = true;
     //TODO: siren, and start countdown
+    countdown = setInterval(updateClock, 1000);
 }
 
 function reset() {
@@ -68,3 +75,32 @@ function reset() {
     //TODO: stop song 
     init();
 }
+
+function checkForWin() {
+    return wiresToCut.length ? false : true;
+}
+
+function endGame(win) {
+    clearTimeout(delay);
+    clearInterval(countdown);
+    gameOver = true;
+    resetButton.disabled = false;
+    if (win) {
+        timer.classList.add('green');
+        //TODO: yay audio
+        console.log('win');
+    } else {
+        document.body.classList.add('exploded');
+        //TODO: explosion audio
+        console.log('win');
+    }
+}
+
+function updateClock() {
+    remainingTime--;
+    if (remainingTime <= 0) {
+        endGame(false);
+    }
+    timer.textContent = `0:00:${remainingTime}`;
+}
+init();
