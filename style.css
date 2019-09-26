@@ -4,6 +4,7 @@ html, body {
 }
 
 body{
+  background-image: url(img/simcity.jpg);
   text-align: center;
   background-size: cover;
   background-attachment: fixed;
@@ -20,16 +21,8 @@ button {
   width: 85%;
 }
 
-.unexploded {
-  background-image: url(img/simcity.jpg);
-}
-
 .exploded {
   background-image: url(img/explosion.jpg)
-}
-
-.red {
-  color: red;
 }
 
 .green {
