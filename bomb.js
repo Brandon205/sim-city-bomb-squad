@@ -18,24 +18,27 @@ var wiresToCut = [];
 var timer = document.getElementById('timer');
 var wireBox = document.getElementById('wirebox');
 var resetButton = document.querySelector('button');
+var explode = document.getElementById('explode');
+var yay = document.getElementById('yay');
+var buzz = document.getElementById('buzz');
+var siren = document.getElementById('siren');
+var success = document.getElementById('success');
 
 //Event Handlers
 wireBox.addEventListener('click', function(e) {
     var color = e.target.alt;
     if (!wireState[color] && !gameOver && color) {//if these things then...
         e.target.src = `img/cut-${color}-wire.png`;
-        //TODO: play cut audio
+        buzz.play();
         wireState[color] = true;
         //check for correctness
         var wireIndex = wiresToCut.indexOf(color);
         if (wireIndex > -1) {
-            console.log('correct');
             wiresToCut.splice(wireIndex, 1);
             if (checkForWin()) {
                 endGame(true);
             }
         } else {
-            console.log('wrong');
             delay = setTimeout(endGame, 750, false);
         }
     }
@@ -55,7 +58,7 @@ function init() {
     }
     console.log(wiresToCut);
     resetButton.disable = true;
-    //TODO: siren, and start countdown
+    siren.play();
     countdown = setInterval(updateClock, 1000);
 }
 
@@ -72,7 +75,8 @@ function reset() {
     timer.classList.remove('green');
     clearTimeout(delay);
     clearInterval(countdown);
-    //TODO: stop song 
+    success.pause();
+    success.currentTime = 0;
     init();
 }
 
@@ -87,12 +91,13 @@ function endGame(win) {
     resetButton.disabled = false;
     if (win) {
         timer.classList.add('green');
-        //TODO: yay audio
-        console.log('win');
+        yay.addEventListener('ended', function() {
+            success.play();
+        })
+        yay.play();
     } else {
         document.body.classList.add('exploded');
-        //TODO: explosion audio
-        console.log('win');
+        explode.play();
     }
 }
 

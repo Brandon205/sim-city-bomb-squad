@@ -21,15 +21,15 @@ button {
   width: 85%;
 }
 
+p {
+  color: red;
+  font-size: 1.5em;
+}
+
 .exploded {
   background-image: url(img/explosion.jpg)
 }
 
 .green {
   color: green;
-}
-
-#timer {
-  color: red;
-  font-size: 1.5em;
 }
